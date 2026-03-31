@@ -1,6 +1,15 @@
 import { Router } from "express";
-import { login, register, verifyEmail } from "../controllers/auth.controller.js";
-import { validateRegister, validateLogin } from "../validators/auth.validator.js";
+import {
+  register,
+  login,
+  getMe,
+  verifyEmail,
+} from "../controllers/auth.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+import {
+  validateRegister,
+  validateLogin,
+} from "../validators/auth.validator.js";
 
 const authRouter = Router();
 
@@ -19,6 +28,13 @@ authRouter.post("/register", validateRegister, register);
  * @body { email: String, password: String }
  */
 authRouter.post("/login", validateLogin, login);
+
+/**
+ * @route GET /api/auth/get-me
+ * @desc Get current authenticated user's details
+ * @access Private
+ */
+authRouter.get("/get-me", authMiddleware, getMe);
 
 /**
  * @route GET /api/auth/verify-email

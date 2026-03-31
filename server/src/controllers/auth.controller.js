@@ -136,6 +136,30 @@ export async function login(req, res) {
 }
 
 /**
+ * @desc Get current authenticated user's details
+ * @route GET /api/auth/get-me
+ * @access Private
+ */
+export async function getMe(req, res) {
+  const userId = req.user.id;
+
+  const user = await userModel.findById(userId).select("-password");
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+      error: "User Not Found",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    user,
+  }); 
+}
+
+/**
  * @desc Verify user's email address using the token sent in the welcome email
  * @route GET /api/auth/verify-email
  * @access Public
