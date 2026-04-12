@@ -40,6 +40,7 @@ export const useChat = () => {
     dispatch(
       addNewMessage({
         chatId: chatId || chat._id,
+        id: crypto.randomUUID(),
         content: aiMessage.content,
         role: aiMessage.role,
       }),
@@ -75,6 +76,7 @@ export const useChat = () => {
       const { messages } = data;
 
       const formattedMessages = messages.map((msg) => ({
+        id: msg._id,
         content: msg.content,
         role: msg.role,
       }));
